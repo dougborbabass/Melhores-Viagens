@@ -1,5 +1,6 @@
 package br.com.douglas.melhoresviagens.ui.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -35,6 +36,9 @@ public class ResumoPacoteActivity extends AppCompatActivity {
         mostraDiasPacote();
         mostraPrecoPacote();
         mostraDataDaViagem();
+
+        Intent intent = new Intent(this, PagamentoActivity.class);
+        startActivity(intent);
 
     }
 

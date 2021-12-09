@@ -1,7 +1,6 @@
 package br.com.douglas.melhoresviagens.ui.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 import br.com.douglas.melhoresviagens.R;
 import br.com.douglas.melhoresviagens.model.Pacote;
+import br.com.douglas.melhoresviagens.util.DiasUtil;
+import br.com.douglas.melhoresviagens.util.MoedaUtil;
+import br.com.douglas.melhoresviagens.util.ResourcesUtil;
 
 public class ListaPacotesAdapter extends BaseAdapter {
 
@@ -60,26 +58,19 @@ public class ListaPacotesAdapter extends BaseAdapter {
 
     private void mostraPreco(View viewCriada, Pacote pacote) {
         TextView tv_preco = viewCriada.findViewById(R.id.item_pacote_preco);
-        NumberFormat formatoBR = DecimalFormat.getCurrencyInstance(new Locale("pt", "br"));
-        BigDecimal precoDoPacote = pacote.getPreco();
-        String precoPacoteFormatoBR = formatoBR
-                .format(precoDoPacote)
-                .replace("R$", "R$ ");
+        String precoPacoteFormatoBR = MoedaUtil.formataMoedaParaBR(pacote.getPreco());
         tv_preco.setText(precoPacoteFormatoBR);
     }
 
     private void mostraQtdDias(View viewCriada, Pacote pacote) {
         TextView tv_dias = viewCriada.findViewById(R.id.item_pacote_dias);
-        int qtdDias = pacote.getDias();
-        tv_dias.setText(qtdDias > 1 ? qtdDias + " dias" : qtdDias + " dia");
+        String diasEmTexto = DiasUtil.formataEmdias(pacote.getDias());
+        tv_dias.setText(diasEmTexto);
     }
 
     private void mostraImagem(View viewCriada, Pacote pacote) {
         ImageView im_image = viewCriada.findViewById(R.id.item_pacote_imagem);
-        Resources resources = context.getResources();
-        int idDoDrawable = resources.getIdentifier(pacote.getImagem(), "drawable", context.getPackageName());
-        Resources.Theme tema = context.getTheme();
-        Drawable drawableImagemPacote = resources.getDrawable(idDoDrawable, tema);
+        Drawable drawableImagemPacote = ResourcesUtil.devolveUmDrawable(context, pacote.getImagem());
         im_image.setImageDrawable(drawableImagemPacote);
     }
 

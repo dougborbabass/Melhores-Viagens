@@ -1,10 +1,11 @@
 package br.com.douglas.melhoresviagens.ui.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.math.BigDecimal;
 
@@ -24,12 +25,20 @@ public class PagamentoActivity extends AppCompatActivity {
 
         setTitle(TITULO_APP_BAR);
 
-        pacote = new Pacote("São Paulo", "sao_paulo_sp", 2, new BigDecimal("243.99"));
+        Intent intent = getIntent();
+        if (intent.hasExtra("pacote")) {
+            pacote = (Pacote) intent.getSerializableExtra("pacote");
 
-        mostraPreco();
+            mostraPreco();
+        }
 
-        Intent intent = new Intent(this, ResumoCompraActivity.class);
-        startActivity(intent);
+        Button btn_pagamento = findViewById(R.id.pagamento_finalizar_compra);
+        btn_pagamento.setOnClickListener(view -> {
+            Intent i = new Intent(this, ResumoCompraActivity.class);
+            i.putExtra("pacote", pacote);
+            startActivity(i);
+        });
+
     }
 
     private void mostraPreco() {

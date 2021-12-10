@@ -1,5 +1,6 @@
 package br.com.douglas.melhoresviagens.ui.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -27,12 +28,15 @@ public class ResumoCompraActivity extends AppCompatActivity {
 
         setTitle(TITULO_APP_BAR);
 
-        pacote = new Pacote("São Paulo", "sao_paulo_sp", 2, new BigDecimal("243.99"));
+        Intent intent = getIntent();
+        if (intent.hasExtra("pacote")) {
+            pacote = (Pacote) intent.getSerializableExtra("pacote");
 
-        mostraImagemPacote();
-        mostraLocalPacote();
-        mostraDataDaViagem();
-        mostraPrecoPacote();
+            mostraImagemPacote();
+            mostraLocalPacote();
+            mostraDataDaViagem();
+            mostraPrecoPacote();
+        }
     }
 
     private void mostraImagemPacote() {

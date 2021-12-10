@@ -5,9 +5,11 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ import br.com.douglas.melhoresviagens.util.DiasUtil;
 import br.com.douglas.melhoresviagens.util.MoedaUtil;
 import br.com.douglas.melhoresviagens.util.ResourcesUtil;
 
-public class ListaPacotesAdapter extends BaseAdapter {
+public class ListaPacotesAdapter extends RecyclerView.Adapter<ListaPacotesAdapter.mViewHolder> {
 
     private final List<Pacote> pacotes;
     private final Context context;
@@ -27,55 +29,51 @@ public class ListaPacotesAdapter extends BaseAdapter {
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public int getCount() {
+    public mViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View viewCriada = LayoutInflater.from(context).inflate(R.layout.item_pacote, parent, false);
+        return new mViewHolder(viewCriada);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull mViewHolder holder, int position) {
+        Pacote pacote = pacotes.get(position);
+        holder.preencheCampos(pacote);
+    }
+
+
+    @Override
+    public int getItemCount() {
         return pacotes.size();
     }
 
-    @Override
-    public Pacote getItem(int posicao) {
-        return pacotes.get(posicao);
-    }
+    class mViewHolder extends RecyclerView.ViewHolder {
 
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
+        final TextView tv_preco;
+        final TextView tv_dias;
+        final ImageView im_image;
+        final TextView tv_local;
 
-    @Override
-    public View getView(int posicao, View view, ViewGroup parent) {
-        View viewCriada = LayoutInflater.from(context).inflate(R.layout.item_pacote, parent, false);
+        public mViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tv_preco = itemView.findViewById(R.id.item_pacote_preco);
+            tv_dias = itemView.findViewById(R.id.item_pacote_dias);
+            im_image = itemView.findViewById(R.id.item_pacote_imagem);
+            tv_local = itemView.findViewById(R.id.item_pacote_local);
+        }
 
-        Pacote pacote = pacotes.get(posicao);
+        private void preencheCampos(Pacote pacote) {
+            String precoPacoteFormatoBR = MoedaUtil.formataMoedaParaBR(pacote.getPreco());
+            tv_preco.setText(precoPacoteFormatoBR);
 
-        mostraLocal(viewCriada, pacote);
-        mostraImagem(viewCriada, pacote);
-        mostraQtdDias(viewCriada, pacote);
-        mostraPreco(viewCriada, pacote);
+            String diasEmTexto = DiasUtil.formataEmdias(pacote.getDias());
+            tv_dias.setText(diasEmTexto);
 
-        return viewCriada;
-    }
+            Drawable drawableImagemPacote = ResourcesUtil.devolveUmDrawable(context, pacote.getImagem());
+            im_image.setImageDrawable(drawableImagemPacote);
 
-    private void mostraPreco(View viewCriada, Pacote pacote) {
-        TextView tv_preco = viewCriada.findViewById(R.id.item_pacote_preco);
-        String precoPacoteFormatoBR = MoedaUtil.formataMoedaParaBR(pacote.getPreco());
-        tv_preco.setText(precoPacoteFormatoBR);
-    }
-
-    private void mostraQtdDias(View viewCriada, Pacote pacote) {
-        TextView tv_dias = viewCriada.findViewById(R.id.item_pacote_dias);
-        String diasEmTexto = DiasUtil.formataEmdias(pacote.getDias());
-        tv_dias.setText(diasEmTexto);
-    }
-
-    private void mostraImagem(View viewCriada, Pacote pacote) {
-        ImageView im_image = viewCriada.findViewById(R.id.item_pacote_imagem);
-        Drawable drawableImagemPacote = ResourcesUtil.devolveUmDrawable(context, pacote.getImagem());
-        im_image.setImageDrawable(drawableImagemPacote);
-    }
-
-    private void mostraLocal(View viewCriada, Pacote pacote) {
-        TextView tv_local = viewCriada.findViewById(R.id.item_pacote_local);
-        tv_local.setText(pacote.getLocal());
+            tv_local.setText(pacote.getLocal());
+        }
     }
 }

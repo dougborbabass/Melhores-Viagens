@@ -8,13 +8,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.math.BigDecimal;
-
 import br.com.douglas.melhoresviagens.R;
 import br.com.douglas.melhoresviagens.model.Pacote;
 import br.com.douglas.melhoresviagens.util.Datautil;
 import br.com.douglas.melhoresviagens.util.MoedaUtil;
 import br.com.douglas.melhoresviagens.util.ResourcesUtil;
+
+import static br.com.douglas.melhoresviagens.ui.activity.PacoteActivityConstantes.CHAVE_PACOTE;
 
 public class ResumoCompraActivity extends AppCompatActivity {
 
@@ -27,16 +27,22 @@ public class ResumoCompraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_resumo_compra);
 
         setTitle(TITULO_APP_BAR);
+        carregaPacoteRecebido();
+    }
 
+    private void carregaPacoteRecebido() {
         Intent intent = getIntent();
-        if (intent.hasExtra("pacote")) {
-            pacote = (Pacote) intent.getSerializableExtra("pacote");
-
-            mostraImagemPacote();
-            mostraLocalPacote();
-            mostraDataDaViagem();
-            mostraPrecoPacote();
+        if (intent.hasExtra(CHAVE_PACOTE)) {
+            pacote = (Pacote) intent.getSerializableExtra(CHAVE_PACOTE);
+            iniciaCampos();
         }
+    }
+
+    private void iniciaCampos() {
+        mostraImagemPacote();
+        mostraLocalPacote();
+        mostraDataDaViagem();
+        mostraPrecoPacote();
     }
 
     private void mostraImagemPacote() {

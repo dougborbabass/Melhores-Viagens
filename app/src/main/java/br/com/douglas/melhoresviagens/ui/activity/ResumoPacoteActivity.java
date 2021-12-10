@@ -3,14 +3,11 @@ package br.com.douglas.melhoresviagens.ui.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.math.BigDecimal;
 
 import br.com.douglas.melhoresviagens.R;
 import br.com.douglas.melhoresviagens.model.Pacote;
@@ -18,6 +15,8 @@ import br.com.douglas.melhoresviagens.util.Datautil;
 import br.com.douglas.melhoresviagens.util.DiasUtil;
 import br.com.douglas.melhoresviagens.util.MoedaUtil;
 import br.com.douglas.melhoresviagens.util.ResourcesUtil;
+
+import static br.com.douglas.melhoresviagens.ui.activity.PacoteActivityConstantes.CHAVE_PACOTE;
 
 public class ResumoPacoteActivity extends AppCompatActivity {
 
@@ -30,25 +29,38 @@ public class ResumoPacoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_resumo_pacote);
 
         setTitle(TITULO_APP_BAR);
+        carregaPacoteRecebido();
 
+    }
+
+    private void carregaPacoteRecebido() {
         Intent intent = getIntent();
-        if (intent.hasExtra("pacote")) {
-            pacote = (Pacote) intent.getSerializableExtra("pacote");
-
-            mostraLocalPacote();
-            mostraImagemPacote();
-            mostraDiasPacote();
-            mostraPrecoPacote();
-            mostraDataDaViagem();
+        if (intent.hasExtra(CHAVE_PACOTE)) {
+            pacote = (Pacote) intent.getSerializableExtra(CHAVE_PACOTE);
+            inicializaCampos();
+            configuraBotao();
         }
+    }
 
+    private void configuraBotao() {
         Button btn_realizaPagamento = findViewById(R.id.resumo_pacote_realizar_pagamento);
         btn_realizaPagamento.setOnClickListener(view -> {
-            Intent i = new Intent(this, PagamentoActivity.class);
-            i.putExtra("pacote", pacote);
-            startActivity(i);
+            vaiParaPagamento();
         });
+    }
 
+    private void inicializaCampos() {
+        mostraLocalPacote();
+        mostraImagemPacote();
+        mostraDiasPacote();
+        mostraPrecoPacote();
+        mostraDataDaViagem();
+    }
+
+    private void vaiParaPagamento() {
+        Intent i = new Intent(this, PagamentoActivity.class);
+        i.putExtra(CHAVE_PACOTE, pacote);
+        startActivity(i);
     }
 
     private void mostraLocalPacote() {

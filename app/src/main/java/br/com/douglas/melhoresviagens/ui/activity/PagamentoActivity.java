@@ -7,11 +7,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.math.BigDecimal;
-
 import br.com.douglas.melhoresviagens.R;
 import br.com.douglas.melhoresviagens.model.Pacote;
 import br.com.douglas.melhoresviagens.util.MoedaUtil;
+
+import static br.com.douglas.melhoresviagens.ui.activity.PacoteActivityConstantes.CHAVE_PACOTE;
 
 public class PagamentoActivity extends AppCompatActivity {
 
@@ -24,21 +24,31 @@ public class PagamentoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pagamento);
 
         setTitle(TITULO_APP_BAR);
+        carregaPacoteRecebido();
 
+    }
+
+    private void carregaPacoteRecebido() {
         Intent intent = getIntent();
-        if (intent.hasExtra("pacote")) {
-            pacote = (Pacote) intent.getSerializableExtra("pacote");
+        if (intent.hasExtra(CHAVE_PACOTE)) {
+            pacote = (Pacote) intent.getSerializableExtra(CHAVE_PACOTE);
 
             mostraPreco();
+            configuraBotaoFinalizaCompra();
         }
+    }
 
+    private void configuraBotaoFinalizaCompra() {
         Button btn_pagamento = findViewById(R.id.pagamento_finalizar_compra);
         btn_pagamento.setOnClickListener(view -> {
-            Intent i = new Intent(this, ResumoCompraActivity.class);
-            i.putExtra("pacote", pacote);
-            startActivity(i);
+            vaiParaResumoCompra();
         });
+    }
 
+    private void vaiParaResumoCompra() {
+        Intent i = new Intent(this, ResumoCompraActivity.class);
+        i.putExtra(CHAVE_PACOTE, pacote);
+        startActivity(i);
     }
 
     private void mostraPreco() {

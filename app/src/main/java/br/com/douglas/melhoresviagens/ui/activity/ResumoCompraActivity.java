@@ -17,12 +17,15 @@ import br.com.douglas.melhoresviagens.util.ResourcesUtil;
 
 public class ResumoCompraActivity extends AppCompatActivity {
 
+    public static final String TITULO_APP_BAR = "Resumo da compra";
     private Pacote pacote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resumo_compra);
+
+        setTitle(TITULO_APP_BAR);
 
         pacote = new Pacote("São Paulo", "sao_paulo_sp", 2, new BigDecimal("243.99"));
 

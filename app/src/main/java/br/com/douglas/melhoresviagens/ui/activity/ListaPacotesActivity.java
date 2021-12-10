@@ -2,9 +2,12 @@ package br.com.douglas.melhoresviagens.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -19,6 +22,7 @@ public class ListaPacotesActivity extends AppCompatActivity {
 
     public static final String TITULO_APP_BAR = "Pacotes";
 
+    private ListaPacotesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,18 +30,25 @@ public class ListaPacotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_pacotes);
 
         setTitle(TITULO_APP_BAR);
-        configuraLista();
+        List<Pacote> pacotes = carregaPacotesDao();
+        configuraLista(pacotes);
     }
 
-    private void configuraLista() {
+    private void configuraLista(List<Pacote> pacotes) {
         ListView listaDePacotes = findViewById(R.id.lista_pacotes_listview);
-        final List<Pacote> pacotes = new PacoteDao().lista();
-        listaDePacotes.setAdapter(new ListaPacotesAdapter(pacotes, this));
+        configuraAdapter(pacotes, listaDePacotes);
+    }
 
-        listaDePacotes.setOnItemClickListener((adapterView, view, posicao, id) -> {
-            Pacote pacoteClicado = pacotes.get(posicao);
-            vaiParaResumoPacote(pacoteClicado);
+    private void configuraAdapter(List<Pacote> pacotes, ListView listaDePacotes) {
+        adapter = new ListaPacotesAdapter(pacotes, this);
+        listaDePacotes.setAdapter(adapter);
+        listaDePacotes.setOnItemClickListener((adapterView, view, position, l) -> {
+            vaiParaResumoPacote(pacotes.get(position));
         });
+    }
+
+    private List<Pacote> carregaPacotesDao() {
+        return new PacoteDao().lista();
     }
 
     private void vaiParaResumoPacote(Pacote pacoteClicado) {

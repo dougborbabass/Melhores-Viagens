@@ -2,6 +2,7 @@ package br.com.douglas.melhoresviagens.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -26,6 +27,9 @@ public class PagamentoActivity extends AppCompatActivity {
         pacote = new Pacote("São Paulo", "sao_paulo_sp", 2, new BigDecimal("243.99"));
 
         mostraPreco();
+
+        Intent intent = new Intent(this, ResumoCompraActivity.class);
+        startActivity(intent);
     }
 
     private void mostraPreco() {

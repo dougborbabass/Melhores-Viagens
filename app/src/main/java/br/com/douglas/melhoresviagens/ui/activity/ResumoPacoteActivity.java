@@ -48,7 +48,7 @@ public class ResumoPacoteActivity extends AppCompatActivity {
     }
 
     private void mostraImagemPacote() {
-        ImageView im_local = findViewById(R.id.resumo_pacote_imagem);
+        ImageView im_local = findViewById(R.id.resumo_pacote_banner);
         Drawable drawableDoPacote = ResourcesUtil.devolveUmDrawable(this, pacoteSP.getImagem());
         im_local.setImageDrawable(drawableDoPacote);
     }

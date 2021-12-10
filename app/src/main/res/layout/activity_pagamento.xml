@@ -53,7 +53,7 @@
 
     <EditText
         android:id="@+id/pagamento_mes_cartao"
-        android:layout_width="40dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:hint="@string/mes_cartao"
         android:inputType="number"
@@ -65,7 +65,7 @@
 
     <EditText
         android:id="@+id/pagamento_ano_cartao"
-        android:layout_width="40dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:hint="@string/ano_cartao"
         android:inputType="number"
